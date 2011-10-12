@@ -1,6 +1,20 @@
 <?php
 class ErrorSniffer
 {
+    public function __construct($restringToIp)
+    {
+        if ($this->getip() == $restringToIp) {
+            self::register_exceptionHandler($this);
+            self::set_error_handler($this);
+            self::register_shutdown_function($this);
+        }
+    }
+
+    public static function factory($restringToIp)
+    {
+        return new self($restringToIp);
+    }
+    
     private $errors = array();
 
     private function getip() {
@@ -91,19 +105,5 @@ class ErrorSniffer
     public function printErrors()
     {
         print_r($this->errors);
-    }
-
-    public function __construct($restingToIp)
-    {
-        if ($this->getip() == $restingToIp) {
-            self::register_exceptionHandler($this);
-            self::set_error_handler($this);
-            self::register_shutdown_function($this);
-        }
-    }
-
-    public static function factory($restingToIp)
-    {
-        return new self($restingToIp);
     }
 }
